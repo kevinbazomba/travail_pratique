@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Formulaire de Connexion</title>
+<style>
+  /* Style global */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  /* Conteneur du formulaire */
+  .login-container {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 320px;
+  }
+
+  /* Titre */
+  .login-container h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #333;
+  }
+
+  /* Champs du formulaire */
+  .login-container input[type="text"],
+  .login-container input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0 20px 0;
+    border: 1.8px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+
+  .login-container input[type="text"]:focus,
+  .login-container input[type="password"]:focus {
+    border-color: #3b82f6;
+    outline: none;
+  }
+
+  /* Bouton connexion */
+  .login-container button.login-btn {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #3b82f6;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .login-container button.login-btn:hover {
+    background-color: #2563eb;
+  }
+
+  /* Bouton retour */
+  .login-container button.back-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px 0;
+    background-color: #e0e0e0;
+    border: none;
+    color: #555;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .login-container button.back-btn:hover {
+    background-color: #cfcfcf;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Connexion</h2>
+  <form  method="POST">
+      {% csrf_token %}
+    <input type="text" name="username" placeholder="Nom d'utilisateur" required />
+    <input type="password" name="password" placeholder="Mot de passe" required />
+    <button type="submit" class="login-btn">Se connecter</button>
+  </form>
+  <button class="back-btn" onclick="history.back()">← Retour</button>
+</div>
+
+</body>
+</html>

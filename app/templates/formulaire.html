@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Envoi du TP</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f4f4f9;
+    }
+
+    .top-button {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      font-size: 18px;
+      padding: 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 30px;
+      animation: clignoter 1s infinite alternate;
+    }
+
+    @keyframes clignoter {
+      from { opacity: 1; }
+      to { opacity: 0.4; }
+    }
+
+    h2 {
+      color: #333;
+    }
+    .instructions {
+      background-color: #fff3cd;
+      border-left: 6px solid #ffc107;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .formulaire {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      padding: 25px;
+      max-width: 500px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    input[type="submit"] {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    input[type="submit"]:hover {
+      background-color: #218838;
+    }
+
+    .success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #d4edda;
+      color: #155724;
+      padding: 20px 40px;
+      border: 2px solid #c3e6cb;
+      border-radius: 8px;
+      display: none;
+      z-index: 9999;
+      font-size: 18px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-button" onclick="window.location.href='/trouver';">
+    🔍 Voir tous les Travaux Pratiques des étudiants
+  </div>
+
+  <h2>📌 Instructions pour l’envoi du Travail Pratique (TP)</h2>
+  <p style="font-weight: bold; color: #555; margin-top: -10px;">
+    Université Président Joseph Kasa-Vubu
+  </p>
+
+  <div class="instructions">
+    <p>👨‍🎓 Cher(e)s étudiant(e)s,</p>
+    <p>Merci de suivre ces étapes avant de soumettre votre TP :</p>
+    <ol>
+      <li>✍️ Écrivez <strong>votre nom complet</strong> (Nom, Postnom, Prénom) sur la feuille de votre TP.</li>
+      <li>📷 Prenez une <strong>photo claire</strong> de votre TP (nom visible et contenu lisible).</li>
+      <li>📝 Remplissez le formulaire ci-dessous :</li>
+      <ul>
+        <li>Indiquez à nouveau votre <strong>nom complet</strong>.</li>
+        <li>Téléversez la <strong>photo de votre TP</strong>.</li>
+      </ul>
+    </ol>
+    <p class="important">⚠️ Le TP sans nom visible sur la feuille ou sans nom inscrit dans le formulaire ne seront pas pris en compte.</p>
+    <p>🙏 Merci pour votre sérieux.</p>
+  </div>
+
+  <div class="formulaire">
+    <form id="tpForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      <label for="nom">Nom complet :</label>
+      <input type="text" id="nom" name="nom_complet" required>
+
+      <label for="fichier">Photo du TP :</label>
+      <input type="file" id="fichier" name="photos" accept="image/*" required>
+      <input type="submit" value="Envoyer le TP">
+    </form>
+  </div>
+
+  <div id="successMessage" class="success-message">
+    ✅ TP envoyé avec succès !<br>
+    Nous l'avons bien reçu et il est désormais en attente de correction.<br><br>
+    🔔 Vous serez informé(e) dès que votre travail aura été évalué.
+  </div>
+
+  <script>
+const form = document.getElementById("tpForm");
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  
+  const formData = new FormData(form);
+
+  fetch(form.action, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+    },
+    body: formData
+  })
+  .then(response => response.ok ? response.text() : Promise.reject())
+  .then(data => {
+    form.reset();
+    const message = document.getElementById("successMessage");
+    message.style.display = "block";
+    setTimeout(() => message.style.display = "none", 10000);
+  })
+  .catch(() => alert("Une erreur s'est produite."));
+});
+
+  </script>
+
+</body>
+</html>
